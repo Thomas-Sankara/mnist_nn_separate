@@ -11,7 +11,7 @@ class Mnist_CNN(nn.Module):
         self.conv3 = nn.Conv2d(16, 10, kernel_size=3, stride=2, padding=1)
 
     def forward(self, xb):
-        xb = xb.view(-1, 1, 28, 28)
+        xb = xb.view(-1, 1, 28, 28)  # 这数据集里读出来的数据张量是一行代表一个图，需要变成方形。
         xb = F.relu(self.conv1(xb))
         xb = F.relu(self.conv2(xb))
         xb = F.relu(self.conv3(xb))

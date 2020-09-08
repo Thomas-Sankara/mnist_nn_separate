@@ -12,6 +12,8 @@ def result(bs):
     # 该数据集为 numpy 数组格式，并已使用 pickle(一种用于序列化数据的 python 特定格式）存储。
     # 要强制使用正斜杠表示字符串，请使用as_posix（）方法。
     # "rb"——read binary，以读的方式打开二进制存储格式文件。读numpy array时，参数encoding的值要为"latin-1"。
+    # .as_posix()方法会把PosixPath对象变成字符串
+    # 可以print一下type，x_train和另外三个变量取出来的时候是numpy.ndarray数据类型
     """
     “Pickling” 是将 Python 对象及其所拥有的层次结构转化为一个字节流的过程，而 “unpickling” 是相反的操作，
     会将（来自一个 binary file 或者 bytes-like object 的）字节流转化回一个对象层次结构。
@@ -22,14 +24,15 @@ def result(bs):
 
     with gzip.open((PATH / FILENAME).as_posix(), "rb") as f:
         ((x_train, y_train), (x_valid, y_valid), _) = pickle.load(f, encoding="latin-1")  # 官方文档写的是"latin1"
-
+    print(x_train)
     # map() 会根据提供的函数对指定序列做映射。
     # 第一个参数 function 以参数序列中的每一个元素调用 function 函数，返回包含每次 function 函数返回值的新列表。
     # 所有list都被变成tensor了。
+    
     x_train, y_train, x_valid, y_valid = map(
         torch.tensor, (x_train, y_train, x_valid, y_valid)
     )
-
+    
     from torch.utils.data import TensorDataset
 
     # 把数据和标签合并到一起。可别写到上面去，函数输入要求是tensor。写到上面最糟的就是这行是不报错的，
